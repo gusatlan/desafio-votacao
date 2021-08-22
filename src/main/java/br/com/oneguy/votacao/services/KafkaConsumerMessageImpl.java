@@ -115,7 +115,7 @@ public class KafkaConsumerMessageImpl implements IConsumerMessage {
             }
 
         } catch(Exception e) {
-            logger.error("Message is not type AssociateDTO", e);
+            logger.error("ERROR on AssociateDTO", e);
         }
     }
 
@@ -139,7 +139,7 @@ public class KafkaConsumerMessageImpl implements IConsumerMessage {
             }
 
         } catch(Exception e) {
-            logger.error("Message is not type MinuteMeetingDTO", e);
+            logger.error("ERROR on MinuteMeetingDTO", e);
         }
     }
 
@@ -157,7 +157,7 @@ public class KafkaConsumerMessageImpl implements IConsumerMessage {
             }
 
         } catch(Exception e) {
-            logger.error("Message is not type PollMeetingDTO", e);
+            logger.error("ERROR on PollMeetingDTO", e);
         }
     }
 
@@ -175,7 +175,7 @@ public class KafkaConsumerMessageImpl implements IConsumerMessage {
             }
 
         } catch(Exception e) {
-            logger.error("Message is not type AssociateVoteDTO", e);
+            logger.error("ERROR on AssociateVoteDTO", e);
         }
     }
 }
