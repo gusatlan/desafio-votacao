@@ -1,0 +1,14 @@
+timezone: America/Sao_Paulo
+
+spring:
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/votacao
+    username: root
+    password: sam1436
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate.dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate.ddl-auto: create-drop
+    generate-ddl: true
+    show-sql: true
