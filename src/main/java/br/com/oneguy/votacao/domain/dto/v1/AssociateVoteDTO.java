@@ -6,13 +6,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 
 public class AssociateVoteDTO extends BaseIdDTO implements Serializable {
-    @JsonProperty("sessaoId")
-    private String pollMeetingId = null;
+    @JsonProperty("minuteMeetingId")
+    private String minuteMeetingId = null;
 
-    @JsonProperty("associadoId")
+    @JsonProperty("associateId")
     private String associateId = null;
 
-    @JsonProperty("voto")
+    @JsonProperty("vote")
     private Vote vote = null;
 
 
@@ -20,7 +20,7 @@ public class AssociateVoteDTO extends BaseIdDTO implements Serializable {
      * Constructor
      */
     public AssociateVoteDTO() {
-        this.pollMeetingId = null;
+        this.minuteMeetingId = null;
         this.associateId = null;
         this.vote = null;
     }
@@ -30,19 +30,19 @@ public class AssociateVoteDTO extends BaseIdDTO implements Serializable {
      */
 
     /**
-     * Return pollMeetingId
-     * @return pollMeetingId
+     * Return minuteMeetingId
+     * @return minuteMeetingId
      */
-    public String getPollMeetingId() {
-        return pollMeetingId;
+    public String getMinuteMeetingId() {
+        return minuteMeetingId;
     }
 
     /**
-     * Set pollMeetingId
-     * @param pollMeetingId
+     * Set minuteMeetingId
+     * @param minuteMeetingId
      */
-    public void setPollMeetingId(final String pollMeetingId) {
-        this.pollMeetingId = pollMeetingId;
+    public void setMinuteMeetingId(final String minuteMeetingId) {
+        this.minuteMeetingId = minuteMeetingId;
     }
 
     /**

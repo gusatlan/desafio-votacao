@@ -9,5 +9,5 @@ import java.util.Collection;
 @Repository
 public interface IAssociateRepository extends JpaRepository<AssociatePU, String> {
 
-    public Collection<AssociatePU> findByIdentification(final String identification);
+    Collection<AssociatePU> findByIdentification(final String identification);
 }

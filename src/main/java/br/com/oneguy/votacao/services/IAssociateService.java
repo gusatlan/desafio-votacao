@@ -3,8 +3,6 @@ package br.com.oneguy.votacao.services;
 import br.com.oneguy.votacao.domain.dto.v1.AssociateDTO;
 import br.com.oneguy.votacao.domain.persistence.AssociatePU;
 import br.com.oneguy.votacao.utils.CpfState;
-import br.com.oneguy.votacao.utils.Response;
-import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Set;
@@ -23,11 +21,11 @@ public interface IAssociateService {
 
     String add(final AssociateDTO value) throws Exception;
 
-    AssociatePU update(final AssociatePU value);
+    AssociatePU update(final AssociatePU value) throws Exception;
 
     String update(final AssociateDTO value) throws Exception;
 
-    boolean remove(final String id);
+    boolean remove(final String id) throws Exception;
 
     String remove(final AssociateDTO value) throws Exception;
 
@@ -36,5 +34,7 @@ public interface IAssociateService {
     <T> Set<String> validateEntity(T obj);
 
     boolean exists(final String id);
+
+    AssociateDTO convert(final AssociatePU value) throws NullPointerException;
 
 }

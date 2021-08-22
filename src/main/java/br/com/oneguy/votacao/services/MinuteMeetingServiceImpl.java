@@ -49,6 +49,7 @@ public class MinuteMeetingServiceImpl implements IMinuteMeetingService {
 
     /**
      * Convert MinuteMeetingPU to MinuteMeetingDTO
+     *
      * @param value
      * @return dto
      */
@@ -65,13 +66,13 @@ public class MinuteMeetingServiceImpl implements IMinuteMeetingService {
                 dto.setCountTotal(value.getPoll().countTotal());
                 dto.setCountAgree(value.getPoll().countAgrees());
                 dto.setCountDisagree(value.getPoll().countDisagrees());
-            } catch(Exception e) {
+            } catch (Exception e) {
                 dto.setCountTotal(0L);
                 dto.setCountAgree(0L);
                 dto.setCountDisagree(0L);
             }
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             dto = null;
             logger.error("ERROR in CONVERT MinuteMeetingPU to MinuteMeetingDTO", e);
         }
@@ -129,7 +130,7 @@ public class MinuteMeetingServiceImpl implements IMinuteMeetingService {
      */
     @Override
     @Transactional
-    public MinuteMeetingPU update(final MinuteMeetingPU value) {
+    public MinuteMeetingPU update(final MinuteMeetingPU value) throws Exception {
         MinuteMeetingPU obj = null;
 
         try {
@@ -141,6 +142,7 @@ public class MinuteMeetingServiceImpl implements IMinuteMeetingService {
             logger.info("MinuteMeeting {} updated", value.getId());
         } catch (Exception e) {
             logger.error("ERROR on UPDATE MinuteMeeting", e);
+            throw e;
         }
 
         return obj;
@@ -154,8 +156,7 @@ public class MinuteMeetingServiceImpl implements IMinuteMeetingService {
      */
     @Override
     @Transactional
-    public boolean remove(final String id) {
-        boolean success = true;
+    public boolean remove(final String id) throws Exception {
 
         try {
             MinuteMeetingPU obj = findById(id);
@@ -166,11 +167,11 @@ public class MinuteMeetingServiceImpl implements IMinuteMeetingService {
             repository.delete(obj);
             logger.info("MinuteMeeting {} deleted", obj.getId());
         } catch (Exception e) {
-            success = false;
             logger.error("ERROR on DELETE MinuteMeeting", e);
+            throw e;
         }
 
-        return success;
+        return true;
     }
 
     /**
@@ -180,6 +181,7 @@ public class MinuteMeetingServiceImpl implements IMinuteMeetingService {
      * @return valid
      */
     @Override
+    @Transactional
     public boolean validate(MinuteMeetingPU value) {
         return value != null && value.isValid() && validateEntity(value).isEmpty();
     }
@@ -217,20 +219,25 @@ public class MinuteMeetingServiceImpl implements IMinuteMeetingService {
     public String add(final MinuteMeetingDTO value) throws Exception {
         String id = null;
 
-        if (value == null) {
-            throw new NullPointerException("Ata nula para inserir");
-        }
+        try {
+            if (value == null) {
+                throw new NullPointerException("Ata nula para inserir");
+            }
 
-        if (!validateEntity(value).isEmpty()) {
-            throw new ValidationException("Erro na validação da Ata para inserir");
-        }
+            if (!validateEntity(value).isEmpty()) {
+                throw new ValidationException("Erro na validação da Ata para inserir");
+            }
 
-        if (exists(value.getId())) {
-            throw new EntityExistsException("Ata já cadastrada para inserir");
-        }
+            if (exists(value.getId())) {
+                throw new EntityExistsException("Ata já cadastrada para inserir");
+            }
 
-        sendMessage.send(new Action<>(value, CRUD.CREATE));
-        id = value.getId();
+            sendMessage.send(new Action<>(value, CRUD.CREATE));
+            id = value.getId();
+        } catch (Exception e) {
+            logger.error("ERROR on VALIDATE to ADD MinuteMeetingDTO {}", e, value);
+            throw e;
+        }
 
         return id;
     }
@@ -245,20 +252,25 @@ public class MinuteMeetingServiceImpl implements IMinuteMeetingService {
     public String update(final MinuteMeetingDTO value) throws Exception {
         String id = null;
 
-        if (value == null) {
-            throw new NullPointerException("Ata nula para atualizar");
-        }
+        try {
+            if (value == null) {
+                throw new NullPointerException("Ata nula para atualizar");
+            }
 
-        if (!validateEntity(value).isEmpty()) {
-            throw new ValidationException("Erro na validação da Ata para atualizar");
-        }
+            if (!validateEntity(value).isEmpty()) {
+                throw new ValidationException("Erro na validação da Ata para atualizar");
+            }
 
-        if (!exists(value.getId())) {
-            throw new EntityNotFoundException("Ata não cadastrada");
-        }
+            if (!exists(value.getId())) {
+                throw new EntityNotFoundException("Ata não cadastrada");
+            }
 
-        sendMessage.send(new Action<>(value, CRUD.UPDATE));
-        id = value.getId();
+            sendMessage.send(new Action<>(value, CRUD.UPDATE));
+            id = value.getId();
+        } catch (Exception e) {
+            logger.error("ERROR on VALIDATE to UPDATE MinuteMeetingDTO {}", e, value);
+            throw e;
+        }
 
         return id;
     }
@@ -273,16 +285,21 @@ public class MinuteMeetingServiceImpl implements IMinuteMeetingService {
     public String remove(final MinuteMeetingDTO value) throws Exception {
         String id = null;
 
-        if (value == null) {
-            throw new NullPointerException("Ata nula para excluir");
-        }
+        try {
+            if (value == null) {
+                throw new NullPointerException("Ata nula para excluir");
+            }
 
-        if (!exists(value.getId())) {
-            throw new EntityNotFoundException("Ata não existe para excluir");
-        }
+            if (!exists(value.getId())) {
+                throw new EntityNotFoundException("Ata não existe para excluir");
+            }
 
-        sendMessage.send(new Action<>(value, CRUD.DELETE));
-        id = value.getId();
+            sendMessage.send(new Action<>(value, CRUD.DELETE));
+            id = value.getId();
+        } catch (Exception e) {
+            logger.error("ERROR on VALIDATE to REMOVE MinuteMeetingDTO {}", e, value);
+            throw e;
+        }
 
         return id;
     }

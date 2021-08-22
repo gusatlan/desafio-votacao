@@ -16,7 +16,7 @@ import org.springframework.kafka.core.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import static br.com.oneguy.votacao.utils.KafkaParamUtil.*;
+import static br.com.oneguy.votacao.utils.ApplicationConstants.*;
 
 @EnableKafka
 @Configuration

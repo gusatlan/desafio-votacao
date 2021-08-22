@@ -1,22 +1,20 @@
-package br.com.oneguy.votacao.endpoints;
+package br.com.oneguy.votacao.endpoints.v1;
 
 import br.com.oneguy.votacao.domain.dto.v1.AssociateDTO;
 import br.com.oneguy.votacao.domain.persistence.AssociatePU;
 import br.com.oneguy.votacao.services.IAssociateService;
 import br.com.oneguy.votacao.services.IEndpointService;
-import br.com.oneguy.votacao.utils.ConverterUtil;
-import br.com.oneguy.votacao.utils.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.stream.Collectors;
 
-import static br.com.oneguy.votacao.utils.EndpointsUtil.ENDPOINT_ASSOCIATE_V1;
+import static br.com.oneguy.votacao.utils.ApplicationConstants.ENDPOINT_ASSOCIATE_V1;
 
 @RestController
 @RequestMapping(ENDPOINT_ASSOCIATE_V1)
@@ -24,6 +22,7 @@ public class AssociateEndpoint {
 
     private IAssociateService associateService;
     private IEndpointService endpointService;
+    private static final String RETRIEVE_TEMPLATE = ENDPOINT_ASSOCIATE_V1 + "/%s";
 
     /**
      * Constructor
@@ -44,19 +43,9 @@ public class AssociateEndpoint {
      * @return associate added
      */
     @PostMapping("/")
-    public ResponseEntity<Response<String>> add(@Valid @RequestBody final AssociateDTO value) {
-        return endpointService.proccess((p) -> {
-                    String key = null;
-                    try {
-                        key = associateService.add(p);
-                    } catch (Exception e) {
-                    }
-                    return key;
-                }
-                , value
-                , 30L
-                , ENDPOINT_ASSOCIATE_V1,
-                associateService.validateEntity(value));
+    public ResponseEntity<String> add(@Valid @RequestBody final AssociateDTO value, final HttpServletRequest request) throws Exception {
+        String uri = endpointService.process(RETRIEVE_TEMPLATE, associateService.add(value), request);
+        return ResponseEntity.ok(uri);
     }
 
     /**
@@ -66,21 +55,9 @@ public class AssociateEndpoint {
      * @return associate added
      */
     @PutMapping
-    public ResponseEntity<Response<String>> update(@Valid @RequestBody() final AssociateDTO value) {
-            ResponseEntity<Response<String>> response = endpointService.proccess((p) -> {
-                        String key = null;
-                        try {
-                            key = associateService.update(p);
-                        } catch (Exception e) {
-                        }
-                        return key;
-                    }
-                    , value
-                    , 30L
-                    , ENDPOINT_ASSOCIATE_V1,
-                    associateService.validateEntity(value));
-
-        return response;
+    public ResponseEntity<String> update(@Valid @RequestBody() final AssociateDTO value, final HttpServletRequest request) throws Exception {
+        String uri = endpointService.process(RETRIEVE_TEMPLATE, associateService.update(value), request);
+        return ResponseEntity.ok(uri);
     }
 
     /**
@@ -90,21 +67,10 @@ public class AssociateEndpoint {
      * @return associate added
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Response<String>> remove(@PathVariable(value = "id", required = true) final String id) {
+    public ResponseEntity<String> remove(@PathVariable(value = "id", required = true) final String id, final HttpServletRequest request) throws Exception {
         AssociateDTO value = new AssociateDTO(id, null);
-
-        return endpointService.proccess((p) -> {
-                    String key = null;
-                    try {
-                        key = associateService.remove(p);
-                    } catch (Exception e) {
-                    }
-                    return key;
-                }
-                , value
-                , 30L
-                , ENDPOINT_ASSOCIATE_V1,
-                new HashSet<>());
+        String uri = endpointService.process(RETRIEVE_TEMPLATE, associateService.remove(value), request);
+        return ResponseEntity.ok(uri);
     }
 
     /**
@@ -125,17 +91,9 @@ public class AssociateEndpoint {
      * @return associate
      */
     @GetMapping("/{id}")
-    public ResponseEntity<AssociateDTO> findById(@PathVariable(value = "id", required = true) final String id) {
-        AssociatePU obj = associateService.findById(id);
-        AssociateDTO dto = new AssociateDTO();
-        HttpStatus status = obj != null ? HttpStatus.OK : HttpStatus.NOT_FOUND;
-
-        try {
-            dto.setId(obj.getId());
-            dto.setIdentification(obj.getIdentification());
-        } catch (Exception e) {
-            dto = null;
-        }
+    public ResponseEntity<AssociateDTO> findById(@PathVariable(value = "id", required = true) final String id) throws Exception {
+        AssociateDTO dto = associateService.convert(associateService.findById(id));
+        HttpStatus status = dto != null ? HttpStatus.OK : HttpStatus.NOT_FOUND;
 
         return new ResponseEntity<>(dto, status);
     }
@@ -159,7 +117,7 @@ public class AssociateEndpoint {
     private ResponseEntity<Collection<AssociateDTO>> convert(final Collection<AssociatePU> values) {
         return ResponseEntity.ok(values.stream()
                 .filter(p -> p != null && p.isValid())
-                .map(p -> ConverterUtil.convert(p))
+                .map(p -> associateService.convert(p))
                 .collect(Collectors.toSet()));
     }
 

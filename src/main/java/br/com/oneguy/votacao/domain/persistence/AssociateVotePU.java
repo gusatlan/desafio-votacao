@@ -5,7 +5,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
-@Table(name="associado_voto", uniqueConstraints = @UniqueConstraint(name= "uc_associado_voto", columnNames = {"associado_id", "sessao_id"}))
+@Table(name="votacao_associado_voto", uniqueConstraints = @UniqueConstraint(name= "uc_associado_voto", columnNames = {"associado_id", "sessao_id"}))
 public class AssociateVotePU extends BaseIdPU implements Serializable {
 
     @NotNull(message = "Associado não pode ser nulo")

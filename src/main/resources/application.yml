@@ -9,6 +9,32 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate.dialect: org.hibernate.dialect.MySQL5InnoDBDialect
-    hibernate.ddl-auto: create-drop
+    hibernate.ddl-auto: update
     generate-ddl: true
     show-sql: true
+
+kafka:
+  hosts: localhost:9092
+
+logging:
+  level:
+    org:
+      springframework.web: INFO
+      hibernate: INFO
+  file: application.log
+
+endpoints:
+  metrics:
+    id: metrics
+    sensitive: true
+    enabled: true
+
+management:
+  endpoint:
+    health:
+      group:
+        custom:
+          show:
+            components: always
+            details: always
+

@@ -16,7 +16,7 @@ public interface IPollMeetingService {
     <T> Set<String> validateEntity(T obj);
 
     @Transactional
-    PollMeetingPU add(PollMeetingPU value);
+    PollMeetingPU add(PollMeetingPU value) throws Exception;
 
     String add(PollMeetingDTO value) throws Exception;
 

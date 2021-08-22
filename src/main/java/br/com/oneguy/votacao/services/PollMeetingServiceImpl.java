@@ -25,6 +25,7 @@ public class PollMeetingServiceImpl implements IPollMeetingService {
 
     /**
      * Constructor
+     *
      * @param logger
      * @param repository
      * @param validator
@@ -47,6 +48,7 @@ public class PollMeetingServiceImpl implements IPollMeetingService {
 
     /**
      * Return poll by id
+     *
      * @param id
      * @return pollMeeting
      */
@@ -57,6 +59,7 @@ public class PollMeetingServiceImpl implements IPollMeetingService {
 
     /**
      * Check if poll exists
+     *
      * @param id
      * @return exists
      */
@@ -90,12 +93,13 @@ public class PollMeetingServiceImpl implements IPollMeetingService {
 
     /**
      * Add PollMeeting
+     *
      * @param value
      * @return poll
      */
     @Override
     @Transactional
-    public PollMeetingPU add(final PollMeetingPU value) {
+    public PollMeetingPU add(final PollMeetingPU value) throws Exception {
         PollMeetingPU obj = value;
 
         try {
@@ -115,13 +119,14 @@ public class PollMeetingServiceImpl implements IPollMeetingService {
                 throw new EntityExistsException("Ata já tem sessão de votação " + value.getMinuteMeeting().getId());
             }
 
-            if(!validate(value)) {
+            if (!validate(value)) {
                 throw new ValidationException("Sessão de votação inválida");
             }
 
             obj = repository.save(value);
-        } catch(Exception e) {
-            logger.error("ERROR on ADD PollMeeting: ", e);
+        } catch (Exception e) {
+            logger.error("ERROR on ADD PollMeeting {}: ", e, obj);
+            throw e;
         }
 
         return obj;
@@ -137,34 +142,40 @@ public class PollMeetingServiceImpl implements IPollMeetingService {
     public String add(final PollMeetingDTO value) throws Exception {
         String id = null;
 
-        if (value == null) {
-            throw new NullPointerException();
-        }
+        try {
+            if (value == null) {
+                throw new NullPointerException();
+            }
 
-        if (value.getMinuteMeetingId() == null) {
-            throw new NullPointerException("Sessão de votação sem Ata");
-        }
+            if (value.getMinuteMeetingId() == null) {
+                throw new NullPointerException("Sessão de votação sem Ata");
+            }
 
-        if (!minuteMeetingService.exists(value.getMinuteMeetingId())) {
-            throw new EntityNotFoundException("Ata não encontrada " + value.getMinuteMeetingId());
-        }
+            if (!minuteMeetingService.exists(value.getMinuteMeetingId())) {
+                throw new EntityNotFoundException("Ata não encontrada " + value.getMinuteMeetingId());
+            }
 
-        if (minuteMeetingService.findById(value.getMinuteMeetingId()).getPoll() != null) {
-            throw new EntityExistsException("Ata já tem sessão de votação " + value.getMinuteMeetingId());
-        }
+            if (minuteMeetingService.findById(value.getMinuteMeetingId()).getPoll() != null) {
+                throw new EntityExistsException("Ata já tem sessão de votação " + value.getMinuteMeetingId());
+            }
 
-        if(!validator.validate(value)) {
-            throw new ValidationException("Sessão de votação inválida");
-        }
+            if (!validator.validate(value)) {
+                throw new ValidationException("Sessão de votação inválida");
+            }
 
-        sendMessage.send(new Action<>(value, CRUD.CREATE));
-        id = value.getId();
+            sendMessage.send(new Action<>(value, CRUD.CREATE));
+            id = value.getId();
+        } catch (Exception e) {
+            logger.error("ERROR on VALIDATE PollMeeting {} to ADD: ", e, value);
+            throw e;
+        }
 
         return id;
     }
 
     /**
      * Convert PollMeetingDTO to PollMeetingPU
+     *
      * @param value
      * @return pollMeeting
      */

@@ -59,6 +59,39 @@ public class MinuteMeetingDTO extends BaseIdDTO implements Serializable {
         this.countTotal = null;
     }
 
+    /**
+     * Constructor
+     * @param id
+     * @param countAgree
+     * @param countDisagree
+     * @param countTotal
+     * @param description
+     * @param resume
+     */
+    public MinuteMeetingDTO(final String id, final Long countAgree, final Long countDisagree, final Long countTotal, final String description, final String resume) {
+        super(id);
+        setDescription(description);
+        setResume(resume);
+        setCountAgree(countAgree);
+        setCountDisagree(countDisagree);
+        setCountTotal(countTotal);
+    }
+
+    /**
+     * Constructor
+     * @param id
+     * @param countAgree
+     * @param countDisagree
+     * @param countTotal
+     */
+    public MinuteMeetingDTO(final String id, final Long countAgree, final Long countDisagree, final Long countTotal) {
+        super(id);
+        setCountAgree(countAgree);
+        setCountDisagree(countDisagree);
+        setCountTotal(countTotal);
+        setResume(null);
+        setDescription(null);
+    }
 
     /*
      * Setters and Getters

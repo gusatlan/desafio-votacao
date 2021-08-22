@@ -5,11 +5,10 @@ import br.com.oneguy.votacao.utils.Action;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
-import static br.com.oneguy.votacao.utils.KafkaParamUtil.*;
+import static br.com.oneguy.votacao.utils.ApplicationConstants.*;
 
 @Service
 public class SendMessageKafkaImpl implements ISendMessage {

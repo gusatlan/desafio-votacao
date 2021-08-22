@@ -116,7 +116,7 @@ public class AssociateServiceImpl implements IAssociateService {
             obj = repository.save(value);
             logger.info("Associate {} {} added", value.getId(), value.getIdentification());
         } catch (Exception e) {
-            logger.error("ERROR on ADD Associate", e);
+            logger.error("ERROR on ADD Associate {}", e, value);
             throw e;
         }
 
@@ -130,7 +130,7 @@ public class AssociateServiceImpl implements IAssociateService {
      * @return associate updated
      */
     @Transactional
-    public AssociatePU update(final AssociatePU value) {
+    public AssociatePU update(final AssociatePU value) throws Exception {
         AssociatePU obj = null;
 
         try {
@@ -145,7 +145,8 @@ public class AssociateServiceImpl implements IAssociateService {
             obj = repository.save(value);
             logger.info("Associate {} {} updated", value.getId(), value.getIdentification());
         } catch (Exception e) {
-            logger.error("ERROR on UPDATE Associate", e);
+            logger.error("ERROR on UPDATE Associate {}", e, value);
+            throw e;
         }
 
         return obj;
@@ -158,8 +159,7 @@ public class AssociateServiceImpl implements IAssociateService {
      * @return success
      */
     @Transactional
-    public boolean remove(final String id) {
-        boolean success = true;
+    public boolean remove(final String id) throws Exception {
 
         try {
             AssociatePU obj = findById(id);
@@ -170,11 +170,11 @@ public class AssociateServiceImpl implements IAssociateService {
             repository.delete(obj);
             logger.info("Associate {} {} deleted", obj.getId(), obj.getIdentification());
         } catch (Exception e) {
-            success = false;
-            logger.error("ERROR on DELETE Associate", e);
+            logger.error("ERROR on DELETE Associate {}", e, id);
+            throw e;
         }
 
-        return success;
+        return true;
     }
 
     /**
@@ -184,6 +184,7 @@ public class AssociateServiceImpl implements IAssociateService {
      * @return valid
      */
     @Override
+    @Transactional
     public boolean validate(AssociatePU value) {
         return value != null && value.isValid() && validateEntity(value).isEmpty();
     }
@@ -218,24 +219,29 @@ public class AssociateServiceImpl implements IAssociateService {
     public String add(final AssociateDTO value) throws Exception {
         String id = null;
 
-        if (value == null) {
-            throw new NullPointerException("Associado nulo para inserir");
-        }
+        try {
+            if (value == null) {
+                throw new NullPointerException("Associado nulo para inserir");
+            }
 
-        if (!validateEntity(value).isEmpty()) {
-            throw new ValidationException("Erro na validação do Associado para inserir");
-        }
+            if (!validateEntity(value).isEmpty()) {
+                throw new ValidationException("Erro na validação do Associado para inserir");
+            }
 
-        if (exists(value.getId())) {
-            throw new EntityExistsException("Associado já cadastrado para inserir");
-        }
+            if (exists(value.getId())) {
+                throw new EntityExistsException("Associado já cadastrado para inserir");
+            }
 
-        if (findByIdentification(value.getIdentification()).stream().filter(p -> !p.getId().equalsIgnoreCase(value.getId())).count() > 0) {
-            throw new ValidationException("CPF duplicado");
-        }
+            if (findByIdentification(value.getIdentification()).stream().filter(p -> !p.getId().equalsIgnoreCase(value.getId())).count() > 0) {
+                throw new ValidationException("CPF duplicado");
+            }
 
-        sendMessage.send(new Action<>(value, CRUD.CREATE));
-        id = value.getId();
+            sendMessage.send(new Action<>(value, CRUD.CREATE));
+            id = value.getId();
+        } catch (Exception e) {
+            logger.error("ERROR on Validate AssociateDTO {} to ADD", e, value);
+            throw e;
+        }
 
         return id;
     }
@@ -249,24 +255,29 @@ public class AssociateServiceImpl implements IAssociateService {
     public String update(final AssociateDTO value) throws Exception {
         String id = null;
 
-        if (value == null) {
-            throw new NullPointerException("Associado nulo para atualizar");
-        }
+        try {
+            if (value == null) {
+                throw new NullPointerException("Associado nulo para atualizar");
+            }
 
-        if (!validateEntity(value).isEmpty()) {
-            throw new ValidationException("Erro na validação do Associado para atualizar");
-        }
+            if (!validateEntity(value).isEmpty()) {
+                throw new ValidationException("Erro na validação do Associado para atualizar");
+            }
 
-        if (!exists(value.getId())) {
-            throw new EntityNotFoundException("Associado não cadastrado");
-        }
+            if (!exists(value.getId())) {
+                throw new EntityNotFoundException("Associado não cadastrado");
+            }
 
-        if (findByIdentification(value.getIdentification()).stream().filter(p -> !p.getId().equalsIgnoreCase(value.getId())).count() > 0) {
-            throw new ValidationException("CPF duplicado");
-        }
+            if (findByIdentification(value.getIdentification()).stream().filter(p -> !p.getId().equalsIgnoreCase(value.getId())).count() > 0) {
+                throw new ValidationException("CPF duplicado");
+            }
 
-        sendMessage.send(new Action<>(value, CRUD.UPDATE));
-        id = value.getId();
+            sendMessage.send(new Action<>(value, CRUD.UPDATE));
+            id = value.getId();
+        } catch (Exception e) {
+            logger.error("ERROR on Validate AssociateDTO {} to UPDATE", e, value);
+            throw e;
+        }
 
         return id;
     }
@@ -280,18 +291,40 @@ public class AssociateServiceImpl implements IAssociateService {
     public String remove(final AssociateDTO value) throws Exception {
         String id = null;
 
-        if (value == null) {
-            throw new NullPointerException("Associado nulo para excluir");
-        }
+        try {
+            if (value == null) {
+                throw new NullPointerException("Associado nulo para excluir");
+            }
 
-        if (!exists(value.getId())) {
-            throw new EntityNotFoundException("Associado não existe para excluir");
-        }
+            if (!exists(value.getId())) {
+                throw new EntityNotFoundException("Associado não existe para excluir");
+            }
 
-        sendMessage.send(new Action<>(value, CRUD.DELETE));
-        id = value.getId();
+            sendMessage.send(new Action<>(value, CRUD.DELETE));
+            id = value.getId();
+        } catch (Exception e) {
+            logger.error("ERROR on Validate AssociateDTO {} to REMOVE", e, value);
+            throw e;
+        }
 
         return id;
     }
+
+    /**
+     * Convert AssociatePU to AssociateDTO
+     *
+     * @param value
+     * @return associate
+     * @throws NullPointerException
+     */
+    public AssociateDTO convert(final AssociatePU value) throws NullPointerException {
+        AssociateDTO obj = new AssociateDTO();
+
+        obj.setId(value.getId());
+        obj.setIdentification(value.getIdentification());
+
+        return obj;
+    }
+
 
 }

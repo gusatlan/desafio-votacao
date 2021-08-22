@@ -16,10 +16,10 @@ public interface IMinuteMeetingService {
     MinuteMeetingPU add(MinuteMeetingPU value) throws Exception;
 
     @Transactional
-    MinuteMeetingPU update(MinuteMeetingPU value);
+    MinuteMeetingPU update(MinuteMeetingPU value) throws Exception;
 
     @Transactional
-    boolean remove(String id);
+    boolean remove(String id) throws Exception;
 
     boolean validate(MinuteMeetingPU value);
 

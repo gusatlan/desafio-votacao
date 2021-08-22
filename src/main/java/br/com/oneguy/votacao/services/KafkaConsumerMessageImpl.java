@@ -1,6 +1,7 @@
 package br.com.oneguy.votacao.services;
 
 import br.com.oneguy.votacao.domain.dto.v1.AssociateDTO;
+import br.com.oneguy.votacao.domain.dto.v1.AssociateVoteDTO;
 import br.com.oneguy.votacao.domain.dto.v1.MinuteMeetingDTO;
 import br.com.oneguy.votacao.domain.dto.v1.PollMeetingDTO;
 import br.com.oneguy.votacao.domain.persistence.AssociatePU;
@@ -16,7 +17,7 @@ import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
-import static br.com.oneguy.votacao.utils.KafkaParamUtil.*;
+import static br.com.oneguy.votacao.utils.ApplicationConstants.*;
 
 @Component
 public class KafkaConsumerMessageImpl implements IConsumerMessage {
@@ -26,17 +27,29 @@ public class KafkaConsumerMessageImpl implements IConsumerMessage {
     private final IAssociateService associateService;
     private final IMinuteMeetingService minuteMeetingService;
     private final IPollMeetingService pollMeetingService;
+    private final IAssociateVoteService associateVoteService;
 
+    /**
+     * Constructor
+     * @param mapper
+     * @param logger
+     * @param associateService
+     * @param minuteMeetingService
+     * @param pollMeetingService
+     * @param associateVoteService
+     */
     public KafkaConsumerMessageImpl(final ObjectMapper mapper,
                                     final Logger logger,
                                     final IAssociateService associateService,
                                     final IMinuteMeetingService minuteMeetingService,
-                                    final IPollMeetingService pollMeetingService) {
+                                    final IPollMeetingService pollMeetingService,
+                                    final IAssociateVoteService associateVoteService) {
         this.mapper = mapper;
         this.logger = logger;
         this.associateService = associateService;
         this.minuteMeetingService = minuteMeetingService;
         this.pollMeetingService = pollMeetingService;
+        this.associateVoteService = associateVoteService;
     }
 
     @KafkaListener(topics = {TOPIC_ASSOCIATE, TOPIC_MINUTE_MEETING, TOPIC_POLL_MEETING, TOPIC_VOTE}, groupId = GROUP_ID)
@@ -52,6 +65,9 @@ public class KafkaConsumerMessageImpl implements IConsumerMessage {
                 break;
             case TOPIC_POLL_MEETING:
                 handlePollMeeting(buildAction(message, PollMeetingDTO.class));
+                break;
+            case TOPIC_VOTE:
+                handleVote(buildAction(message, AssociateVoteDTO.class));
                 break;
         }
     }
@@ -145,4 +161,21 @@ public class KafkaConsumerMessageImpl implements IConsumerMessage {
         }
     }
 
+    /**
+     * Handle actions for AssociateVote
+     * @param action
+     */
+    private void handleVote(final Action<AssociateVoteDTO> action) {
+
+        try {
+            switch (action.getAction()) {
+                case CREATE:
+                    associateVoteService.add(associateVoteService.convert(action.getObj()));
+                    break;
+            }
+
+        } catch(Exception e) {
+            logger.error("Message is not type AssociateVoteDTO", e);
+        }
+    }
 }
