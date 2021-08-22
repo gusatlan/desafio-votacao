@@ -1,5 +1,5 @@
 #!/bin/bash
 
-mvn clean install
+mvn clean install || ./compile_conteiner
 rm *.log
 
