@@ -3,7 +3,7 @@ timezone: America/Sao_Paulo
 spring:
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/votacao
+    url: jdbc:mysql://db:3306/votacao
     username: root
     password: sam1436
   jpa:
@@ -14,7 +14,7 @@ spring:
     show-sql: true
 
 kafka:
-  hosts: localhost:9092
+  hosts: broker:9092
 
 logging:
   level:

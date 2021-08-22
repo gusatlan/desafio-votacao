@@ -110,7 +110,7 @@ public class MinuteMeetingDTO extends BaseIdDTO implements Serializable {
      * @param description
      */
     public void setDescription(final String description) {
-        this.description = description;
+        this.description = description != null && !description.trim().isEmpty() ? description.trim() : null;
     }
 
     /**
@@ -126,7 +126,7 @@ public class MinuteMeetingDTO extends BaseIdDTO implements Serializable {
      * @param resume
      */
     public void setResume(final String resume) {
-        this.resume = resume;
+        this.resume = resume != null && !resume.trim().isEmpty() ? resume.trim() : null;
     }
 
     /**
@@ -173,7 +173,7 @@ public class MinuteMeetingDTO extends BaseIdDTO implements Serializable {
      */
     public Long getCountTotal() {
         if(countTotal == null) {
-            this.countTotal = 0L;
+            this.countTotal = getCountAgree() + getCountDisagree();
         }
         return countTotal;
     }

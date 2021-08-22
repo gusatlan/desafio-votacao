@@ -38,7 +38,7 @@ public class PollMeetingDTO extends BaseIdDTO implements Serializable {
      * @param minuteMeetingId
      */
     public void setMinuteMeetingId(String minuteMeetingId) {
-        this.minuteMeetingId = minuteMeetingId;
+        this.minuteMeetingId = minuteMeetingId != null && !minuteMeetingId.trim().isEmpty() ? minuteMeetingId.trim().toLowerCase() : null;
     }
 
     /**

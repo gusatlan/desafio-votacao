@@ -4,6 +4,7 @@ import br.com.oneguy.votacao.domain.persistence.Vote;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
+import java.util.Locale;
 
 public class AssociateVoteDTO extends BaseIdDTO implements Serializable {
     @JsonProperty("minuteMeetingId")
@@ -31,6 +32,7 @@ public class AssociateVoteDTO extends BaseIdDTO implements Serializable {
 
     /**
      * Return minuteMeetingId
+     *
      * @return minuteMeetingId
      */
     public String getMinuteMeetingId() {
@@ -39,14 +41,16 @@ public class AssociateVoteDTO extends BaseIdDTO implements Serializable {
 
     /**
      * Set minuteMeetingId
+     *
      * @param minuteMeetingId
      */
     public void setMinuteMeetingId(final String minuteMeetingId) {
-        this.minuteMeetingId = minuteMeetingId;
+        this.minuteMeetingId = minuteMeetingId != null && !minuteMeetingId.trim().isEmpty() ? minuteMeetingId.trim().toLowerCase() :null;
     }
 
     /**
      * Return associateId
+     *
      * @return associateId
      */
     public String getAssociateId() {
@@ -55,14 +59,16 @@ public class AssociateVoteDTO extends BaseIdDTO implements Serializable {
 
     /**
      * Set associateId
+     *
      * @param associateId
      */
     public void setAssociateId(final String associateId) {
-        this.associateId = associateId;
+        this.associateId = associateId != null && !associateId.trim().isEmpty() ? associateId.trim().toLowerCase() : null;
     }
 
     /**
      * Return vote
+     *
      * @return vote
      */
     public Vote getVote() {
@@ -71,6 +77,7 @@ public class AssociateVoteDTO extends BaseIdDTO implements Serializable {
 
     /**
      * Set vote
+     *
      * @param vote
      */
     public void setVote(final Vote vote) {

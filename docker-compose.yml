@@ -1,0 +1,22 @@
+version: '3'
+services:
+  tuss:
+    image: dockerregistry:5000/tuss-microservice-img:latest
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+    ports:
+      - "8080:8080"
+    environment:
+      - KAFKA_ON=false
+      - KAFKA_ACTIVE=false
+      - KAFKA_HOSTS=kafka01:9092
+      - REDIS_HOST=redis
+      - RELOAD=true
+    depends_on: 
+      - redis
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
