@@ -210,6 +210,9 @@ public class PollMeetingPU extends BaseIdPU implements Serializable, Comparable<
      * @return votesTotal
      */
     public Long getVotesTotal() {
+        if(votesTotal == null) {
+            this.votesTotal = 0L;
+        }
         return votesTotal;
     }
 

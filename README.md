@@ -20,7 +20,7 @@ As classes foram nomeadas nos seus correspondentes da língua inglesa. Os nomes 
 
 Foram utilizadas anotações do bean validation para validar as entidades. Além disso foram criadas as constraints na base de dados através das anotações JPA.
 
-A persistência foi realizada com JPA utilizando MySQL como banco de dados, as classes de persistência tem um pós-fixo PU ((P)ersistent (U)nit). Os IDs são strings, geradas a partir de UUID.
+A persistência foi realizada com JPA utilizando MySQL como banco de dados, as classes de persistência tem um pós-fixo PU (Persistent Unit). Os IDs são strings, geradas a partir de UUID.
 
 As classes de borda utilizadas na interface dos endpoints tem um pós-fixo DTO (Data Transfer Object) mantendo a independência da camada de persisência, ou seja, é possível realizar alterações nos DTOs sem afetar diretamente os PUs.
 
@@ -35,6 +35,8 @@ Para os serviços (_Service_) foram criadas as interfaces e suas implementaçõe
 Foi criado **_ICpfValidatorService_** e **_CpfValidatorServiceImpl_** para verificar o CPF do associado **(Tarefa bônus 1)**.
 
 Os endpoints com métodos _POST_, _PUT_ e _DELETE_ são assíncronos, retornando o status _ACCEPTED_ **(Tarefa bônus 3)**
+
+Foram criados testes unitários.
 
 O processo de persistência é realizado da seguinte forma **(Tarefa bônus 2 e 3)**:
 
