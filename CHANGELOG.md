@@ -4,6 +4,7 @@
 
 - Retirada validação de CPF no Consumer Kafka;
 - Adicionado paginação nos endpoints de **associados** e **ata**;
+- Adicionado interface Swagger
 
 ### 2021-08-22
 

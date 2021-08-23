@@ -72,6 +72,8 @@ Para os endpoints de associado e ata, existem os métodos **GET**, para recupera
 
 Para inserção **POST** não é necessário o atributo **_id_**, o mesmo é gerado pela aplicação
 
+Foi disponibilizado interface com o Swagger, para acessá-lo: **_/swagger-ui.html_**
+
 - ### Associado **_/api/v1/associate/_**
 
 > `{ "id": "string", "cpf": "string" }`
