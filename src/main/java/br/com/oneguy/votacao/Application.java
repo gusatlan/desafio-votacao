@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class Application {
-    private static final long WAIT = 30;
+    private static final long WAIT = 40;
 
     public static void main(final String[] args) {
         Logger logger = new LoggerConfig().getLogger();
