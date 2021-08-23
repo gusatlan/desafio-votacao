@@ -68,7 +68,9 @@ Todos os endpoints começam com **_/api/v1/_**
 
 A aplicação roda na porta **_8080_**
 
-Para os endpoints de associado e ata, existem os métodos **GET**, para recuperar por id, adicione a id ao final da url
+Para os endpoints de associado e ata, existem os métodos **GET**, para recuperar por id, adicione a id ao final da url.
+
+Para inserção **POST** não é necessário o atributo **_id_**, o mesmo é gerado pela aplicação
 
 - ### Associado **_/api/v1/associate/_**
 

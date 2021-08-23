@@ -9,7 +9,9 @@
 - Criação do dockerfile;
 - Criação do docker-compose.yml;
 - Criação de scripts para build;
+- Criação de script para build utilizando conteiner maven (compile_conteiner);
 - Criação de documentação README.md;
+- Correção da utilização do atributo _id_ nas classes DTO;
 
 ### 2021-08-21
 

@@ -155,6 +155,10 @@ public class PollMeetingServiceImpl implements IPollMeetingService {
                 throw new EntityNotFoundException("Ata não encontrada " + value.getMinuteMeetingId());
             }
 
+            if(value.getId() == null) {
+                value.setId(new PollMeetingPU().getId());
+            }
+
             if (minuteMeetingService.findById(value.getMinuteMeetingId()).getPoll() != null) {
                 throw new EntityExistsException("Ata já tem sessão de votação " + value.getMinuteMeetingId());
             }

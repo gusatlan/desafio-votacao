@@ -228,6 +228,10 @@ public class AssociateServiceImpl implements IAssociateService {
                 throw new ValidationException("Erro na validação do Associado para inserir");
             }
 
+            if(value.getId() == null) {
+                value.setId(new AssociatePU().getId());
+            }
+
             if (exists(value.getId())) {
                 throw new EntityExistsException("Associado já cadastrado para inserir");
             }
@@ -264,6 +268,10 @@ public class AssociateServiceImpl implements IAssociateService {
                 throw new ValidationException("Erro na validação do Associado para atualizar");
             }
 
+            if(value.getId() == null) {
+                throw new ValidationException("Associado sem id");
+            }
+
             if (!exists(value.getId())) {
                 throw new EntityNotFoundException("Associado não cadastrado");
             }
@@ -294,6 +302,10 @@ public class AssociateServiceImpl implements IAssociateService {
         try {
             if (value == null) {
                 throw new NullPointerException("Associado nulo para excluir");
+            }
+
+            if(value.getId() == null) {
+                throw new ValidationException("Associado sem id");
             }
 
             if (!exists(value.getId())) {

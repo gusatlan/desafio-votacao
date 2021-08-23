@@ -228,6 +228,10 @@ public class MinuteMeetingServiceImpl implements IMinuteMeetingService {
                 throw new ValidationException("Erro na validação da Ata para inserir");
             }
 
+            if(value.getId() == null) {
+                value.setId(new MinuteMeetingPU().getId());
+            }
+
             if (exists(value.getId())) {
                 throw new EntityExistsException("Ata já cadastrada para inserir");
             }
@@ -261,6 +265,10 @@ public class MinuteMeetingServiceImpl implements IMinuteMeetingService {
                 throw new ValidationException("Erro na validação da Ata para atualizar");
             }
 
+            if(value.getId() == null) {
+                throw new ValidationException("Ata sem id");
+            }
+
             if (!exists(value.getId())) {
                 throw new EntityNotFoundException("Ata não cadastrada");
             }
@@ -288,6 +296,10 @@ public class MinuteMeetingServiceImpl implements IMinuteMeetingService {
         try {
             if (value == null) {
                 throw new NullPointerException("Ata nula para excluir");
+            }
+
+            if(value.getId() == null) {
+                throw new ValidationException("Ata sem id");
             }
 
             if (!exists(value.getId())) {

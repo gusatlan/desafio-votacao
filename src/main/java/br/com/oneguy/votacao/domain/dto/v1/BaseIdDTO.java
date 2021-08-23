@@ -49,10 +49,6 @@ public class BaseIdDTO implements Serializable {
      * @return id
      */
     public String getId() {
-        if(id == null) {
-            this.id = UUID.randomUUID().toString().toLowerCase();
-        }
-
         return id;
     }
 
