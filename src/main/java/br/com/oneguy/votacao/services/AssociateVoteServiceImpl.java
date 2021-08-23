@@ -37,6 +37,7 @@ public class AssociateVoteServiceImpl implements IAssociateVoteService {
 
     /**
      * Constructor
+     *
      * @param logger
      * @param validator
      * @param cpfValidatorService
@@ -154,6 +155,10 @@ public class AssociateVoteServiceImpl implements IAssociateVoteService {
                 throw new EntityNotFoundException("Associado não existe");
             }
 
+            // Commented because the REST Service of Cpf validation is not indepotent
+            // Comentado por causo do validador de CPF não ser indepotente, gerando saídas diferentes para o mesmo CPF
+
+            /*
             CpfState cpfState = cpfValidatorService.checkCpf(associate.getIdentification());
 
             if (cpfState.equals(CpfState.NOT_FOUND)) {
@@ -163,6 +168,7 @@ public class AssociateVoteServiceImpl implements IAssociateVoteService {
             if (cpfState.equals(CpfState.UNABLE)) {
                 throw new ValidationException("CPF não permitido para votar");
             }
+             */
 
             if (poll.getVotes()
                     .stream()
@@ -224,7 +230,7 @@ public class AssociateVoteServiceImpl implements IAssociateVoteService {
 
             MinuteMeetingPU minuteMeeting = minuteMeetingRepository.getById(value.getMinuteMeetingId());
 
-            if(minuteMeeting == null) {
+            if (minuteMeeting == null) {
                 throw new EntityNotFoundException("Ata não existe");
             }
 
@@ -260,11 +266,11 @@ public class AssociateVoteServiceImpl implements IAssociateVoteService {
                 throw new ValidationException("Voto do associado nulo");
             }
 
-            if (cpfState.get(10, TimeUnit.SECONDS).equals(CpfState.NOT_FOUND)) {
+            if (cpfState.get(20, TimeUnit.SECONDS).equals(CpfState.NOT_FOUND)) {
                 throw new EntityNotFoundException("CPF inexistente");
             }
 
-            if (cpfState.get(10, TimeUnit.SECONDS).equals(CpfState.UNABLE)) {
+            if (cpfState.get(20, TimeUnit.SECONDS).equals(CpfState.UNABLE)) {
                 throw new ValidationException("CPF não permitido para votar");
             }
 
@@ -283,6 +289,7 @@ public class AssociateVoteServiceImpl implements IAssociateVoteService {
 
     /**
      * Convert AssociateVoteDTO to AssociateVotePU
+     *
      * @param value
      * @return associateVote
      */
@@ -296,7 +303,7 @@ public class AssociateVoteServiceImpl implements IAssociateVoteService {
             obj.setPoll(minuteMeetingRepository.getById(value.getMinuteMeetingId()).getPoll());
             obj.setVote(value.getVote());
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             obj = null;
             logger.error("ERROR on CONVERT AssociateVoteDTO to AssociateVotePU", e);
         }

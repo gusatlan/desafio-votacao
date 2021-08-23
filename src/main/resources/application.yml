@@ -1,5 +1,10 @@
 timezone: America/Sao_Paulo
 
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
 spring:
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
@@ -23,17 +28,16 @@ logging:
       hibernate: INFO
   file: application.log
 
-endpoints:
-  metrics:
-    id: metrics
-    sensitive: true
-    enabled: true
-
 management:
+  endpoints:
+    enabled-by-default: false
+    web:
+      exposure.include: info, health, metrics
   endpoint:
+    info:
+      enabled: true
     health:
-      group:
-        custom:
-          show:
-            components: always
-            details: always
+      enabled: true
+      show-details: always
+    metrics:
+      enabled: true

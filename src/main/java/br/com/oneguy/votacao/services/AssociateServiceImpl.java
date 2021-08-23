@@ -9,6 +9,9 @@ import br.com.oneguy.votacao.utils.CpfState;
 import br.com.oneguy.votacao.utils.StringUtil;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityExistsException;
@@ -92,6 +95,16 @@ public class AssociateServiceImpl implements IAssociateService {
      */
     public Collection<AssociatePU> findAll() {
         return repository.findAll();
+    }
+
+    /**
+     * Return associates page
+     * @param page
+     * @return page
+     */
+    @Override
+    public Page<AssociatePU> findAll(final Pageable page) {
+        return repository.findAll(page);
     }
 
     /**

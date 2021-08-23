@@ -11,7 +11,7 @@ public class AssociateDTO extends BaseIdDTO implements Serializable {
 
     @NotBlank(message="CPF obrigatório")
     @NotNull(message="CPF não pode ser nulo")
-    @JsonProperty("cpf")
+    @JsonProperty("identification")
     private String identification = null;
 
     /**

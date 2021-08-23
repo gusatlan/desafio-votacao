@@ -1,9 +1,13 @@
 package br.com.oneguy.votacao.endpoints.v1;
 
 import br.com.oneguy.votacao.domain.dto.v1.MinuteMeetingDTO;
+import br.com.oneguy.votacao.domain.persistence.MinuteMeetingPU;
 import br.com.oneguy.votacao.services.IEndpointService;
 import br.com.oneguy.votacao.services.IMinuteMeetingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static br.com.oneguy.votacao.utils.ApplicationConstants.ENDPOINT_MINUTE_MEETING_V1;
 
@@ -87,10 +93,21 @@ public class MinuteMeetingEndpoint {
      *
      * @return minuteMeetings
      */
-    @GetMapping()
-    public ResponseEntity<Collection<MinuteMeetingDTO>> findAll() {
-        Collection<MinuteMeetingDTO> items = minuteMeetingService.convert(minuteMeetingService.findAll());
-        return new ResponseEntity<>(items, HttpStatus.OK);
+    @GetMapping
+    public Page<MinuteMeetingDTO> findAll(final Pageable pageable) {
+        Page<MinuteMeetingPU> pagePU = minuteMeetingService.findAll(pageable);
+        Page<MinuteMeetingDTO> page = new PageImpl<>(convert(pagePU.getContent()), pagePU.getPageable(), pagePU.getTotalElements());
+
+        return page;
+    }
+
+    /**
+     * Convert MinuteMeetingPUs to MinuteMeetingDTOs
+     * @param values
+     * @return list
+     */
+    private List<MinuteMeetingDTO> convert(final Collection<MinuteMeetingPU> values) {
+        return minuteMeetingService.convert(values).stream().collect(Collectors.toList());
     }
 
 }

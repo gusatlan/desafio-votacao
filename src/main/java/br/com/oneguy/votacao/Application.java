@@ -10,7 +10,6 @@ public class Application {
 
         try {
             Thread.sleep(30000);
-
         } catch(Exception e) {
         }
 

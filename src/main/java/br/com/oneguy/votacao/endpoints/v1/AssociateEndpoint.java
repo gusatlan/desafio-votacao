@@ -5,6 +5,7 @@ import br.com.oneguy.votacao.domain.persistence.AssociatePU;
 import br.com.oneguy.votacao.services.IAssociateService;
 import br.com.oneguy.votacao.services.IEndpointService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static br.com.oneguy.votacao.utils.ApplicationConstants.ENDPOINT_ASSOCIATE_V1;
@@ -79,9 +81,9 @@ public class AssociateEndpoint {
      * @param identification
      * @return associates
      */
-    @GetMapping("/identification/{identification}")
+    @GetMapping(path = "/identification/{identification}")
     public ResponseEntity<Collection<AssociateDTO>> findByIdentification(@PathVariable(value = "identification", required = true) final String identification) {
-        return convert(associateService.findByIdentification(identification));
+        return ResponseEntity.ok(convert(associateService.findByIdentification(identification)));
     }
 
     /**
@@ -103,9 +105,12 @@ public class AssociateEndpoint {
      *
      * @return associates
      */
-    @GetMapping()
-    public ResponseEntity<Collection<AssociateDTO>> findAll() {
-        return convert(associateService.findAll());
+    @GetMapping
+    public Page<AssociateDTO> findAll(final Pageable pageable) {
+        Page<AssociatePU> pagePU = associateService.findAll(pageable);
+        Page<AssociateDTO> page = new PageImpl<>(convert(pagePU.getContent()), pagePU.getPageable(), pagePU.getTotalElements());
+
+        return page;
     }
 
     /**
@@ -114,11 +119,11 @@ public class AssociateEndpoint {
      * @param values
      * @return associates
      */
-    private ResponseEntity<Collection<AssociateDTO>> convert(final Collection<AssociatePU> values) {
-        return ResponseEntity.ok(values.stream()
+    private List<AssociateDTO> convert(final Collection<AssociatePU> values) {
+        return values.stream()
                 .filter(p -> p != null && p.isValid())
                 .map(p -> associateService.convert(p))
-                .collect(Collectors.toSet()));
+                .collect(Collectors.toList());
     }
 
 }

@@ -3,7 +3,10 @@ package br.com.oneguy.votacao.services;
 import br.com.oneguy.votacao.domain.dto.v1.AssociateDTO;
 import br.com.oneguy.votacao.domain.persistence.AssociatePU;
 import br.com.oneguy.votacao.utils.CpfState;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
+import javax.persistence.criteria.Order;
 import java.util.Collection;
 import java.util.Set;
 
@@ -14,6 +17,8 @@ public interface IAssociateService {
     Collection<AssociatePU> findByIdentification(final String identification);
 
     Collection<AssociatePU> findAll();
+
+    Page<AssociatePU> findAll(final Pageable page);
 
     AssociatePU findById(final String id);
 

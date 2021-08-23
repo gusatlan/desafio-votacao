@@ -1,5 +1,10 @@
 # CHANGELOG
 
+### 2021-08-23
+
+- Retirada validação de CPF no Consumer Kafka;
+- Adicionado paginação nos endpoints de **associados** e **ata**;
+
 ### 2021-08-22
 
 - Implementado testes unitários de classes DTO;

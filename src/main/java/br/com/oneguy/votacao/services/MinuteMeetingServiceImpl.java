@@ -7,6 +7,8 @@ import br.com.oneguy.votacao.utils.Action;
 import br.com.oneguy.votacao.utils.CRUD;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityExistsException;
@@ -94,6 +96,16 @@ public class MinuteMeetingServiceImpl implements IMinuteMeetingService {
     @Override
     public Collection<MinuteMeetingPU> findAll() {
         return repository.findAll();
+    }
+
+    /**
+     * Return page
+     * @param pageable
+     * @return page
+     */
+    @Override
+    public Page<MinuteMeetingPU> findAll(final Pageable pageable) {
+        return repository.findAll(pageable);
     }
 
     /**
