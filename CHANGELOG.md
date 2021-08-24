@@ -6,6 +6,8 @@
 - Criado script run_dependencies
 - Criado arquivo docker-compose-dependencies.yml;
 - Ajustado script run;
+- Criado arquivos de configuração para kubernetes
+- Criado script para subir kubernetes
 
 ### 2021-08-23
 

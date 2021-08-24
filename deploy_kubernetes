@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# Secrets
+kubectl apply -f secrets.yaml
+
+# MySQL
+kubectl apply -f app-mysql.yaml
+
+# Zookeeper
+kubectl apply -f app-zookeeper.yaml
+
+# Kafka
+kubectl apply -f app-kafka.yaml
+
+# Votacao
+kubectl apply -f app-votacao.yaml
