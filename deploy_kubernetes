@@ -1,16 +1,22 @@
 #!/bin/bash
 
 # Secrets
-kubectl apply -f secrets.yaml
+kubectl apply -f secrets.yml
+
+# MapConfig
+kubectl apply -f mapconfig.yml
 
 # MySQL
-kubectl apply -f app-mysql.yaml
+kubectl apply -f app-mysql.yml
 
 # Zookeeper
-kubectl apply -f app-zookeeper.yaml
+kubectl apply -f app-zookeeper.yml
 
 # Kafka
-kubectl apply -f app-kafka.yaml
+kubectl apply -f app-kafka.yml
 
 # Votacao
-kubectl apply -f app-votacao.yaml
+kubectl apply -f app-votacao.yml
+
+# Externo
+minikube service app-votacao-votacao-service
