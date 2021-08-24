@@ -5,6 +5,10 @@ docker pull openjdk:8
 docker build -t votacao-backend-img:1.0 .
 docker build -t votacao-backend-img:latest .
 
+docker image tag votacao-backend-img:latest gusatlan/votacao-backend-img:latest
+docker login
+docker push gusatlan/votacao-backend-img:latest
+
 rm *.log
 rm application*
 rm -Rf target

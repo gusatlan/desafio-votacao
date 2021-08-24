@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: votacao
-          image: votacao-backend-img
+          image: gusatlan/votacao-backend-img
           ports:
             - containerPort: 8080
           env:
