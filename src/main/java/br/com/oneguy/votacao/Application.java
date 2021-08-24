@@ -7,15 +7,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class Application {
-    private static final long WAIT = 40;
 
     public static void main(final String[] args) {
         Logger logger = new LoggerConfig().getLogger();
 
-        logger.info("Waiting {}s to startup database...", WAIT);
-
         try {
-            Thread.sleep(WAIT * 1000);
+            Long delay = Long.valueOf(System.getenv("WAIT_START_DURATION"));
+            logger.info("Waiting {}s to startup database...", delay);
+            Thread.sleep(delay * 1000);
         } catch (Exception e) {
         }
 

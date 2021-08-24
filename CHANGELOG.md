@@ -6,6 +6,7 @@
 - Adicionado paginação nos endpoints de **associados** e **ata**;
 - Adicionado interface Swagger;
 - Implementado testes com Mockito;
+- Adicionado tempo de espera ao iniciar a aplicação, dando chance para o banco de dados subir, tempo de espera configurável através de variável de ambiente;
 
 ### 2021-08-22
 
