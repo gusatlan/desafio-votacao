@@ -95,3 +95,39 @@ Somente **POST**
 Somente **POST**
 
 > `{ "minuteMeetingId" : "string", "associateId": "string", "vote": "Sim/Não"}`
+
+## Rodando a aplicação
+
+### Pré-requisitos
+
+- Linux;
+- Docker/docker-compose;
+- Java 8;
+- Maven;
+- MySQL;
+- Apache Kafka;
+
+O desenvolvimento ocorreu utilizando o Ubuntu, os scripts para build e execução da aplicação usam o bash.
+
+Para rodar em ambiente Windows, o melhor é utilizar o docker e portar os scripts para arquivos em lote (.bat).
+
+### Utilizando docker
+
+Execute o script: **_./run_**
+
+O mesmo se encarregará de:
+
+- Compilar a aplicação;
+- Criar a imagem docker;
+- Levantar os serviços de banco de dados (MySQL) e event stream (Apache Kafka);
+- Levantar a aplicação;
+
+### Utilizando IDE
+
+Execute o script: **_./run_dependencies_**
+
+O script levantará os serviços MySQL e Apache Kafka
+
+- Abra o projeto na IDE de preferência;
+- Modifique o arquivo src/main/resources/application.yml, modificando a url de banco de dados para localhost e kafka hosts também para localhost;
+- Execute a aplicação;

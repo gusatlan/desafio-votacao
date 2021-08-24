@@ -1,5 +1,12 @@
 # CHANGELOG
 
+### 2021-08-24
+
+- Adicionada documentação para executar a aplicação;
+- Criado script run_dependencies
+- Criado arquivo docker-compose-dependencies.yml;
+- Ajustado script run;
+
 ### 2021-08-23
 
 - Retirada validação de CPF no Consumer Kafka;
