@@ -1,5 +1,11 @@
 # CHANGELOG
 
+### 2021-08-25
+
+- Experimentando com kubernetes
+- Ajustado script build para não realizar o pull no dockerhub
+- Ajustado docker-compose.yml para usar a imagem local
+
 ### 2021-08-24
 
 - Adicionada documentação para executar a aplicação;

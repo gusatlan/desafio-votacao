@@ -15,8 +15,11 @@ kubectl apply -f app-zookeeper.yml
 # Kafka
 kubectl apply -f app-kafka.yml
 
+
 # Votacao
 kubectl apply -f app-votacao.yml
 
 # Externo
-minikube service app-votacao-votacao-service
+minikube addons enable ingress
+kubectl apply -f ingress.yml
+#minikube service app-all-service

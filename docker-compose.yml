@@ -37,7 +37,7 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile
-    image: gusatlan/votacao-backend-img:latest
+    image: votacao-backend-img:latest
     deploy:
       replicas: 1
       restart_policy:
