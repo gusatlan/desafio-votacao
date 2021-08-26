@@ -8,6 +8,8 @@ services:
       MYSQL_DATABASE: votacao
     ports:
       - "3306:3306"
+    volumes:
+      - "mysql-volume:/var/lib/mysql"
     #networks:
     #  - app-tier
 
@@ -58,3 +60,5 @@ services:
 #networks:
 #  app-tier:
 #    driver: bridge
+volumes:
+  mysql-volume:

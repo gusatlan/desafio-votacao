@@ -2,9 +2,11 @@
 
 ### 2021-08-25
 
-- Experimentando com kubernetes
-- Ajustado script build para não realizar o pull no dockerhub
-- Ajustado docker-compose.yml para usar a imagem local
+- Experimentando com kubernetes;
+- Ajustado script build para não realizar o pull no dockerhub;
+- Ajustado docker-compose.yml para usar a imagem local;
+- Adicionado volume no docker-compose.yml para o mysql;
+- Experimentando volumes no kubernetes;
 
 ### 2021-08-24
 
